@@ -1,13 +1,72 @@
 import React, { Component } from "react";
-import { Navbar, NavbarBrand, Jumbotron } from "reactstrap";
+import {
+  Nav,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  Collapse,
+  NavItem,
+  Jumbotron,
+} from "reactstrap";
+import { NavLink } from "react-router-dom";
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggleNav = this.toggleNav.bind(this);
+    this.state = {
+      isNavOpen: false,
+    };
+  }
+
+  toggleNav() {
+    this.setState({
+      isNavOpen: !this.state.isNavOpen,
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
-        <Navbar dark>
+        <Navbar expand="md" dark>
+          <NavbarToggler onClick={this.toggleNav} />
           <div className="container">
-            <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
+            <NavbarBrand className="mr-auto" href="/">
+              <img
+                src="assets/images/logo.png"
+                alt="Ristorante Con Fusion"
+                height="30"
+                width="41"
+              />
+            </NavbarBrand>
+            <Collapse isOpen={this.state.isNavOpen} navbar>
+              <Nav navbar>
+                <NavItem>
+                  <NavLink className="nav-link" to="/home">
+                    <span className="fa fa-home fa-large"> Home</span>
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink className="nav-link" to="/aboutus">
+                    <span className="fa fa-info fa-large"> About Us</span>
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink className="nav-link" to="/menu">
+                    <span className="fa fa-list fa-large"> Menu</span>
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink className="nav-link" to="/contactus">
+                    <span className="fa fa-address-card fa-large">
+                      {" "}
+                      Contact Us
+                    </span>
+                  </NavLink>
+                </NavItem>
+              </Nav>
+            </Collapse>
           </div>
         </Navbar>
         <Jumbotron>
