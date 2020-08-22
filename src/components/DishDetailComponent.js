@@ -18,6 +18,7 @@ import {
 import { Link } from "react-router-dom";
 
 import { LocalForm, Control, Errors } from "react-redux-form";
+import { Loading } from "./LoadingComponent";
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -182,36 +183,48 @@ function RenderComments({ comments, addComment, dishId }) {
 }
 
 const DishDetail = (props) => {
-  const dish = props.dish;
-  if (dish == null) {
-    return <div></div>;
-  }
-  // const dishItem = RenderDish(dish);
-  // const commentItem = RenderComments(dish.comments);
-  return (
-    <div className="container">
-      <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/menu">Menu</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
-        </Breadcrumb>
-        <div className="col-12">
-          <h3>{props.dish.name}</h3>
-          <hr />
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
         </div>
       </div>
-      <div className="row">
-        <RenderDish dish={props.dish} />
-        <RenderComments
-          comments={props.comments}
-          addComment={props.addComment}
-          dishId={props.dish.id}
-        />
+    );
+  } else if (props.errmess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.errmess}</h4>
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else if (props.dish != null) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/menu">Menu</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="col-12">
+            <h3>{props.dish.name}</h3>
+            <hr />
+          </div>
+        </div>
+        <div className="row">
+          <RenderDish dish={props.dish} />
+          <RenderComments
+            comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
+        </div>
+      </div>
+    );
+  }
 };
 
 export default DishDetail;
